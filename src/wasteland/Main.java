@@ -33,8 +33,8 @@ public class Main {
     link(startNode, choiceB, resultB);
 
     // Second decision the user must make IF they take Action 1
-    IChoice choiceC = new Choice(WorldA.ACTION_11);
-    INode resultC = new Node(WorldA.PROMPT_11);
+    IChoice choiceC = new Choice(WorldA.ACTION_10);
+    INode resultC = new Node(WorldA.PROMPT_10);
     link(resultB, choiceC, resultC);
 
     // Start the game

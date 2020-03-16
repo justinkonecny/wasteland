@@ -9,6 +9,6 @@ public class WorldA {
   public static final String ACTION_1 = "Action 1";
   public static final String PROMPT_1 = "Another thing happens!";
 
-  public static final String ACTION_11 = "Action 1-1";
-  public static final String PROMPT_11 = "Ah, you died from Action 1-1.";
+  public static final String ACTION_10 = "Action 1-0";
+  public static final String PROMPT_10 = "Ah, you died from Action 1-0.";
 }
