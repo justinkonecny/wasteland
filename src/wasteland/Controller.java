@@ -29,6 +29,7 @@ public class Controller {
 
   private INode displayPrompt(INode node) {
     String startPrompt = node.getPrompt();
+    System.out.println("########################################");
     System.out.println(startPrompt);
     System.out.println();
 
@@ -52,7 +53,7 @@ public class Controller {
       }
 
       // CASE: there are no more actions to take, so print the next prompt
-      System.out.println();
+      System.out.println("########################################");
       System.out.println(next.getPrompt());
     }
 
@@ -70,6 +71,7 @@ public class Controller {
         System.out.print(Constants.USER_PROMPT);
         int selection = this.scanner.nextInt();
         if (selection < numberOfChoices && selection >= 0) {
+          System.out.println();
           return selection;
         }
       } catch (InputMismatchException e) {

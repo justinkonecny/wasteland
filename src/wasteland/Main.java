@@ -1,9 +1,11 @@
 package wasteland;
 
+import wasteland.data.WorldA;
 import wasteland.decision.Choice;
 import wasteland.decision.IChoice;
 import wasteland.decision.INode;
 import wasteland.decision.Node;
+import wasteland.util.Constants;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -13,35 +15,42 @@ public class Main {
     Scanner reader = new Scanner(System.in);
 
     // Some welcome message when the game starts
-    String welcomeMessage = "Welcome!\n";
-    System.out.println(welcomeMessage);
+    System.out.println(Constants.GAME_WELCOME);
     System.out.print("Press 'ENTER' to start... ");
-    waitOnKeyPress();
+    waitOnKeyPressEnter();
 
     // First decision the user must make
-    INode startNode = new Node("Something happens!");
+    INode startNode = new Node(WorldA.PROMPT);
 
-    // Action A the user can take
-    IChoice choiceA = new Choice("Action A");
-    INode promptA = new Node("Oh no, you died from action A");
-    choiceA.setNextNode(promptA);
-    startNode.addChoice(choiceA);
+    // Action 0 the user can take
+    IChoice choiceA = new Choice(WorldA.ACTION_0);
+    INode resultA = new Node(WorldA.PROMPT_0);
+    link(startNode, choiceA, resultA);
 
-    // Action B the user can take
-    IChoice choiceB = new Choice("Action B");
-    INode promptB = new Node("Ah, you died from action B");
-    choiceB.setNextNode(promptB);
-    startNode.addChoice(choiceB);
+    // Action 1 the user can take
+    IChoice choiceB = new Choice(WorldA.ACTION_1);
+    INode resultB = new Node(WorldA.PROMPT_1);
+    link(startNode, choiceB, resultB);
+
+    // Second decision the user must make IF they take Action 1
+    IChoice choiceC = new Choice(WorldA.ACTION_11);
+    INode resultC = new Node(WorldA.PROMPT_11);
+    link(resultB, choiceC, resultC);
 
     // Start the game
     Controller controller = new Controller(startNode);
     controller.run();
   }
 
-  private static int waitOnKeyPress() {
+  private static void link(INode current, IChoice choice, INode result) {
+    current.addChoice(choice);
+    choice.setNextNode(result);
+  }
+
+  private static int waitOnKeyPressEnter() {
     try {
       int val = System.in.read();
-      System.out.println("\n");
+      System.out.println();
       return val;
     } catch (IOException e) {
       return -1;
