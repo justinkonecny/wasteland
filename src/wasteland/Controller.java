@@ -18,17 +18,19 @@ public class Controller {
   }
 
   public void run() {
-    this.displayPrompt(this.startNode);
+    INode next = this.startNode;
+
+    while (next != null) {
+      next = this.displayPrompt(next);
+    }
+
+    this.endGame();
   }
 
-  private void displayPrompt(INode node) {
+  private INode displayPrompt(INode node) {
     String startPrompt = node.getPrompt();
     System.out.println(startPrompt);
     System.out.println();
-
-    if (node.getNumberOfChoices() < 1) {
-      return;
-    }
 
     List<IChoice> choices = node.getAllChoices();
     for (int i = 0; i < node.getNumberOfChoices(); i++) {
@@ -38,7 +40,28 @@ public class Controller {
     System.out.println();
 
     int selection = this.readChoice(node.getNumberOfChoices());
-    System.out.println(String.format(Constants.FMT_SELECTED, selection));
+//    System.out.println(String.format(Constants.FMT_SELECTED, selection));
+
+    IChoice action = choices.get(selection);  // The option that the user selected
+
+    if (action.hasNextNode()) {
+      INode next = action.getNextNode();
+      if (next.hasChoices()) {
+        // CASE: there is another prompt and more choices, so keep going
+        return next;
+      }
+
+      // CASE: there are no more actions to take, so print the next prompt
+      System.out.println();
+      System.out.println(next.getPrompt());
+    }
+
+    return null;
+  }
+
+  private void endGame() {
+    System.out.println();
+    System.out.println(Constants.GAME_END);
   }
 
   private int readChoice(int numberOfChoices) {

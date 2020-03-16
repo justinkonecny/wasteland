@@ -41,4 +41,9 @@ public class Node implements INode {
   public int getNumberOfChoices() {
     return this.numberOfChoices;
   }
+
+  @Override
+  public boolean hasChoices() {
+    return this.numberOfChoices > 0;
+  }
 }

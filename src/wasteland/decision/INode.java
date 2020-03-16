@@ -11,4 +11,6 @@ public interface INode {
   List<IChoice> getAllChoices();
 
   int getNumberOfChoices();
+
+  boolean hasChoices();
 }

@@ -5,12 +5,18 @@ import wasteland.decision.IChoice;
 import wasteland.decision.INode;
 import wasteland.decision.Node;
 
-public class Main {
+import java.io.IOException;
+import java.util.Scanner;
 
+public class Main {
   public static void main(String[] args) {
+    Scanner reader = new Scanner(System.in);
+
     // Some welcome message when the game starts
     String welcomeMessage = "Welcome!\n";
     System.out.println(welcomeMessage);
+    System.out.print("Press 'ENTER' to start... ");
+    waitOnKeyPress();
 
     // First decision the user must make
     INode startNode = new Node("Something happens!");
@@ -30,5 +36,15 @@ public class Main {
     // Start the game
     Controller controller = new Controller(startNode);
     controller.run();
+  }
+
+  private static int waitOnKeyPress() {
+    try {
+      int val = System.in.read();
+      System.out.println("\n");
+      return val;
+    } catch (IOException e) {
+      return -1;
+    }
   }
 }

@@ -19,7 +19,7 @@ public class Choice implements IChoice {
 
   @Override
   public boolean hasNextNode() {
-    return this.nextNode == null;
+    return this.nextNode != null;
   }
 
   @Override

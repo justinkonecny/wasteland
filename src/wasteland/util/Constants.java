@@ -7,4 +7,6 @@ public class Constants {
   public static final String FMT_OPTION = "[%d] %s";
 
   public static final String FMT_SELECTED = "User selected: [%d]";
+
+  public static final String GAME_END = "The game has ended!";
 }
