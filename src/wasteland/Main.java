@@ -45,8 +45,6 @@ public class Main {
     // Start the game
     Controller controller = new Controller(startNode);
     controller.run();
-
-    // TODO: POINT SYSTEM
   }
 
   private static void link(INode current, IChoice choice, INode result) {
