@@ -11,10 +11,12 @@ import java.util.Scanner;
 public class Controller {
   private INode startNode;
   private Scanner scanner;
+  private int playerScore;
 
   public Controller(INode startNode) {
     this.startNode = startNode;
     this.scanner = new Scanner(System.in);
+    this.playerScore = 0;
   }
 
   public void run() {
@@ -44,6 +46,7 @@ public class Controller {
 //    System.out.println(String.format(Constants.FMT_SELECTED, selection));
 
     IChoice action = choices.get(selection);  // The option that the user selected
+    this.playerScore = this.playerScore + action.getPointValue();
 
     if (action.hasNextNode()) {
       INode next = action.getNextNode();
@@ -62,7 +65,7 @@ public class Controller {
 
   private void endGame() {
     System.out.println();
-    System.out.println(Constants.GAME_END);
+    System.out.println(String.format(Constants.GAME_END, this.playerScore));
   }
 
   private int readChoice(int numberOfChoices) {
