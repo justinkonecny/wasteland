@@ -12,5 +12,8 @@ public class Constants {
 
   public static final String FMT_SELECTED = "User selected: [%d]";
 
+  public static final String INVENTORY_UPDATE = "Your inventory has been updated, you now have:";
+
   public static final String GAME_END = "The game has ended! Your karma score is: %d";
+  public static final String GAME_END_INVENTORY = "Your final inventory is:";
 }
