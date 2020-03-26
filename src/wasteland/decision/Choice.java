@@ -5,14 +5,25 @@ import java.util.Set;
 
 public class Choice implements IChoice {
 
-  private String text;
+  private String choiceText;
+  private String resultText;
   private INode nextNode;
   private int pointValue;
   private Set<String> objectsToAdd;
   private Set<String> objectsToRemove;
 
-  public Choice(String text, int pointValue) {
-    this.text = text;
+  public Choice(String choiceText, int pointValue) {
+    this.choiceText = choiceText;
+    this.resultText = null;
+    this.nextNode = null;
+    this.pointValue = pointValue;
+    this.objectsToAdd = new HashSet<String>();
+    this.objectsToRemove = new HashSet<String>();
+  }
+
+  public Choice(String choiceText, int pointValue, String resultText) {
+    this.choiceText = choiceText;
+    this.resultText = resultText;
     this.nextNode = null;
     this.pointValue = pointValue;
     this.objectsToAdd = new HashSet<String>();
@@ -21,8 +32,18 @@ public class Choice implements IChoice {
 
 
   @Override
-  public String getText() {
-    return this.text;
+  public String getChoiceText() {
+    return this.choiceText;
+  }
+
+  @Override
+  public String getResultText() {
+    return this.resultText;
+  }
+
+  @Override
+  public boolean hasResultText() {
+    return this.resultText != null;
   }
 
   @Override

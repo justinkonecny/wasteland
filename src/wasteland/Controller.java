@@ -3,7 +3,6 @@ package wasteland;
 import wasteland.decision.IChoice;
 import wasteland.decision.INode;
 import wasteland.util.Constants;
-import wasteland.util.PhysicalObject;
 
 import java.util.HashSet;
 import java.util.InputMismatchException;
@@ -43,7 +42,7 @@ public class Controller {
     List<IChoice> choices = node.getAllChoices();
     for (int i = 0; i < node.getNumberOfChoices(); i++) {
       IChoice choice = choices.get(i);
-      System.out.println(String.format(Constants.FMT_OPTION, i, choice.getText()));
+      System.out.println(String.format(Constants.FMT_OPTION, i, choice.getChoiceText()));
     }
     System.out.println();
 
@@ -54,10 +53,18 @@ public class Controller {
     boolean updatedInventory = action.updatePlayerInventory(this.playerInventory);
     this.playerScore = this.playerScore + action.getPointValue();
 
+    if (action.hasResultText()) {
+      System.out.println(action.getResultText());
+    }
+
     if (updatedInventory) {
+      System.out.println();
       System.out.println(Constants.INVENTORY_UPDATE);
       System.out.println(String.format("[%s]", String.join(", ", this.playerInventory)));
+      System.out.println();
     }
+
+
 
     if (action.hasNextNode()) {
       INode next = action.getNextNode();
@@ -65,10 +72,6 @@ public class Controller {
         // CASE: there is another prompt and more choices, so keep going
         return next;
       }
-
-      // CASE: there are no more actions to take, so print the next prompt
-      System.out.println("##################################################");
-      System.out.println(next.getPrompt());
     }
 
     return null;

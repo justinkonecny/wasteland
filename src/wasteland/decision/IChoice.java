@@ -6,7 +6,11 @@ import java.util.Set;
 
 public interface IChoice {
 
-  String getText();
+  String getChoiceText();
+
+  String getResultText();
+
+  boolean hasResultText();
 
   void addToPlayerOnSelection(String objectToAdd);
 

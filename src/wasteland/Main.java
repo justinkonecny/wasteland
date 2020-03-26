@@ -26,33 +26,34 @@ public class Main {
     // First decision the user must make
     INode startNode = new Node(WorldA.PROMPT);
 
-    // Action 0 the user can take
-    IChoice choiceA = new Choice(WorldA.ACTION_0, WorldA.ACTION_0_VALUE);
-    INode resultA = new Node(WorldA.PROMPT_0);
-    linkResultToNext(startNode, choiceA, resultA);
+    // Action 0 the user can take (DEAD END)
+    IChoice choiceA = new Choice(WorldA.ACTION_0, WorldA.ACTION_0_VALUE, WorldA.RESULT_0);
+    linkPromptToChoice(startNode, choiceA);
 
-    // Action 1 the user can take
-    IChoice choiceB = new Choice(WorldA.ACTION_1, WorldA.ACTION_1_VALUE);
+    // Action 1 the user can take (CONTINUE TO PROMPT 1)
+    IChoice choiceB = new Choice(WorldA.ACTION_1, WorldA.ACTION_1_VALUE, WorldA.RESULT_1);
     choiceB.addToPlayerOnSelection(WorldA.ACTION_1_ADD_OBJECT);
-    INode resultB = new Node(WorldA.PROMPT_1);
-    linkResultToNext(startNode, choiceB, resultB);
+    INode nextB = new Node(WorldA.PROMPT_1);
+    linkPromptChoiceResult(startNode, choiceB, nextB);
 
     // Second decision the user must make IF they take Action 1
-    IChoice choiceC = new Choice(WorldA.ACTION_10, WorldA.ACTION_10_VALUE);
-    INode resultC = new Node(WorldA.PROMPT_10);
-    linkResultToNext(resultB, choiceC, resultC);
+    IChoice choiceC = new Choice(WorldA.ACTION_10, WorldA.ACTION_10_VALUE, WorldA.RESULT_10);
+    linkPromptToChoice(nextB, choiceC);
 
-    IChoice choiceD = new Choice(WorldA.ACTION_11, WorldA.ACTION_11_VALUE);
+    IChoice choiceD = new Choice(WorldA.ACTION_11, WorldA.ACTION_11_VALUE, WorldA.RESULT_11);
     choiceD.addToPlayerOnSelection(WorldA.ACTION_11_ADD_OBJECT);
-    INode resultD = new Node(WorldA.PROMPT_11);
-    linkResultToNext(resultB, choiceD, resultD);
+    linkPromptToChoice(nextB, choiceD);
 
     // Start the game
     Controller controller = new Controller(startNode);
     controller.run();
   }
 
-  private static void linkResultToNext(INode current, IChoice choice, INode result) {
+  private static void linkPromptToChoice(INode current, IChoice choice) {
+    current.addChoice(choice);
+  }
+
+  private static void linkPromptChoiceResult(INode current, IChoice choice, INode result) {
     current.addChoice(choice);
     choice.setNextNode(result);
   }
