@@ -12,6 +12,8 @@ public interface IChoice {
 
   boolean hasResultText();
 
+  void addToPlayerOnSelection(Set<String> objectsToAdd);
+
   void addToPlayerOnSelection(String objectToAdd);
 
   void removeFromPlayerOnSelection(String objectToRemove);

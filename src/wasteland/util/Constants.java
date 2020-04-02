@@ -1,12 +1,16 @@
 package wasteland.util;
 
 public class Constants {
-  public static final String GAME_WELCOME = "Welcome!\n";
 
-  public static final String INTRO_INFECTED = "You are a survivor of the plague";
-  public static final String INTRO_SAFE = "You are lucky enough to had never the plague";
+  public static final String DIVIDER = "####################################################################################################";
 
-  public static final String USER_PROMPT = "What do you do? ";
+  public static final String GAME_WELCOME = "Opening dialogue explaining the situation.\n";
+
+  public static final String INTRO_INFECTED = "You are a survivor of the infection.";
+  public static final String INTRO_SAFE = "You are lucky enough to had never had the infection.";
+
+  public static final String USER_PROMPT_BEFORE = "You can...";
+  public static final String USER_PROMPT_AFTER = "What do you do? ";
 
   public static final String FMT_OPTION = "[%d] %s";
 

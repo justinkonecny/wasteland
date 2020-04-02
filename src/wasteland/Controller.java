@@ -35,9 +35,10 @@ public class Controller {
 
   private INode displayPrompt(INode node) {
     String startPrompt = node.getPrompt();
-    System.out.println("##################################################");
+    System.out.println(Constants.DIVIDER);
     System.out.println(startPrompt);
     System.out.println();
+    System.out.println(Constants.USER_PROMPT_BEFORE);
 
     List<IChoice> choices = node.getAllChoices();
     for (int i = 0; i < node.getNumberOfChoices(); i++) {
@@ -45,6 +46,7 @@ public class Controller {
       System.out.println(String.format(Constants.FMT_OPTION, i, choice.getChoiceText()));
     }
     System.out.println();
+
 
     int selection = this.readChoice(node.getNumberOfChoices());
 //    System.out.println(String.format(Constants.FMT_SELECTED, selection));
@@ -88,7 +90,7 @@ public class Controller {
   private int readChoice(int numberOfChoices) {
     while (true) {
       try {
-        System.out.print(Constants.USER_PROMPT);
+        System.out.print(Constants.USER_PROMPT_AFTER);
         int selection = this.scanner.nextInt();
         if (selection < numberOfChoices && selection >= 0) {
           System.out.println();

@@ -47,6 +47,11 @@ public class Choice implements IChoice {
   }
 
   @Override
+  public void addToPlayerOnSelection(Set<String> objectsToAdd) {
+    this.objectsToAdd.addAll(objectsToAdd);
+  }
+
+  @Override
   public void addToPlayerOnSelection(String objectToAdd) {
     this.objectsToAdd.add(objectToAdd);
   }

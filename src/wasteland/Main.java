@@ -1,6 +1,6 @@
 package wasteland;
 
-import wasteland.data.WorldA;
+import wasteland.data.World;
 import wasteland.decision.Choice;
 import wasteland.decision.IChoice;
 import wasteland.decision.INode;
@@ -23,29 +23,36 @@ public class Main {
     System.out.print("Press 'ENTER' to start... ");
     waitOnKeyPressEnter();
 
-    // First decision the user must make
-    INode startNode = new Node(WorldA.PROMPT);
 
-    // Action 0 the user can take (DEAD END)
-    IChoice choiceA = new Choice(WorldA.ACTION_0, WorldA.ACTION_0_VALUE, WorldA.RESULT_0);
-    linkPromptToChoice(startNode, choiceA);
+    // ================================================================================================================================================== \\
 
-    // Action 1 the user can take (CONTINUE TO PROMPT 1)
-    IChoice choiceB = new Choice(WorldA.ACTION_1, WorldA.ACTION_1_VALUE, WorldA.RESULT_1);
-    choiceB.addToPlayerOnSelection(WorldA.ACTION_1_ADD_OBJECT);
-    INode nextB = new Node(WorldA.PROMPT_1);
-    linkPromptChoiceResult(startNode, choiceB, nextB);
+    INode wakeHospital = new Node(World.PROMPT_WAKE_HOSPITAL);
 
-    // Second decision the user must make IF they take Action 1
-    IChoice choiceC = new Choice(WorldA.ACTION_10, WorldA.ACTION_10_VALUE, WorldA.RESULT_10);
-    linkPromptToChoice(nextB, choiceC);
+    IChoice stayInHospital = new Choice(World.ACTION_STAY_HOSPITAL, World.VALUE_STAY_HOSPITAL, World.RESULT_STAY_HOSPITAL + World.RESULT_LEAVE_HOSPITAL);
+    stayInHospital.addToPlayerOnSelection(World.ADD_LEAVE_HOSPITAL);
+    linkPromptToChoice(wakeHospital, stayInHospital);
 
-    IChoice choiceD = new Choice(WorldA.ACTION_11, WorldA.ACTION_11_VALUE, WorldA.RESULT_11);
-    choiceD.addToPlayerOnSelection(WorldA.ACTION_11_ADD_OBJECT);
-    linkPromptToChoice(nextB, choiceD);
+    IChoice leaveHospital = new Choice(World.ACTION_LEAVE_HOSPITAL, World.VALUE_LEAVE_HOSPITAL, World.RESULT_LEAVE_HOSPITAL);
+    leaveHospital.addToPlayerOnSelection(World.ADD_LEAVE_HOSPITAL);
+    linkPromptToChoice(wakeHospital, leaveHospital);
+
+    // ================================================================================================================================================== \\
+
+    INode encounterDog = new Node(World.PROMPT_DOG);
+    linkChoiceToNext(stayInHospital, encounterDog);
+    linkChoiceToNext(leaveHospital, encounterDog);
+
+    IChoice feedDog = new Choice(World.ACTION_FEED_DOG, World.VALUE_FEED_DOG, World.RESULT_FEED_DOG);
+    feedDog.removeFromPlayerOnSelection(World.REMOVE_FEED_DOG);
+    linkPromptToChoice(encounterDog, feedDog);
+
+    IChoice leaveDog = new Choice(World.ACTION_LEAVE_DOG, World.VALUE_LEAVE_DOG, World.RESULT_LEAVE_DOG);
+    linkPromptToChoice(encounterDog, leaveDog);
+
+    // ================================================================================================================================================== \\
 
     // Start the game
-    Controller controller = new Controller(startNode);
+    Controller controller = new Controller(wakeHospital);
     controller.run();
   }
 
@@ -53,9 +60,8 @@ public class Main {
     current.addChoice(choice);
   }
 
-  private static void linkPromptChoiceResult(INode current, IChoice choice, INode result) {
-    current.addChoice(choice);
-    choice.setNextNode(result);
+  private static void linkChoiceToNext(IChoice choice, INode next) {
+    choice.setNextNode(next);
   }
 
   private static int waitOnKeyPressEnter() {
