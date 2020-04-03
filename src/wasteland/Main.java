@@ -44,12 +44,32 @@ public class Main {
 
     IChoice feedDog = new Choice(World.ACTION_FEED_DOG, World.VALUE_FEED_DOG, World.RESULT_FEED_DOG);
     feedDog.removeFromPlayerOnSelection(World.REMOVE_FEED_DOG);
+    feedDog.updateDogStatus(World.RESULT_NEW_DOG_STATUS);
     linkPromptToChoice(encounterDog, feedDog);
 
     IChoice leaveDog = new Choice(World.ACTION_LEAVE_DOG, World.VALUE_LEAVE_DOG, World.RESULT_LEAVE_DOG);
     linkPromptToChoice(encounterDog, leaveDog);
 
     // ================================================================================================================================================== \\
+
+    INode encounterBikers = new Node(World.PROMPT_BIKERS);
+    linkChoiceToNext(feedDog, encounterBikers);
+    linkChoiceToNext(leaveDog, encounterBikers);
+
+    IChoice attackBikersWithDog = new Choice(World.ACTION_ATTACK_BIKERS_DOG, World.VALUE_ATTACK_BIKERS_DOG, World.RESULT_ATTACK_BIKERS_DOG);
+    attackBikersWithDog.setDependOnDog(World.ACTION_REQUIRES_DOG);
+    linkPromptToChoice(encounterBikers, attackBikersWithDog);
+
+    IChoice attackBikersWithoutDog = new Choice(World.ACTION_ATTACK_BIKERS_NO_DOG, World.VALUE_ATTACK_BIKERS_NO_DOG, World.RESULT_ATTACK_BIKERS_NO_DOG);
+    attackBikersWithoutDog.setDependOnDog(World.ACTION_REQUIRES_NO_DOG);
+    linkPromptToChoice(encounterBikers, attackBikersWithoutDog);
+
+    IChoice askBikers = new Choice(World.ACTION_ASK_BIKERS, World.VALUE_ASK_BIKERS, World.RESULT_ASK_BIKERS);
+    linkPromptToChoice(encounterBikers, askBikers);
+
+    // ================================================================================================================================================== \\
+
+
 
     // Start the game
     Controller controller = new Controller(wakeHospital);

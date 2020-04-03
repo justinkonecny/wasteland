@@ -12,6 +12,18 @@ public interface IChoice {
 
   boolean hasResultText();
 
+  void updateDogStatus(boolean hasDog);
+
+  boolean hasNewDogStatus();
+
+  boolean getNewDogStatus();
+
+  void setDependOnDog(boolean hasDog);
+
+  boolean getDoesDependOnDog();
+
+  boolean getRequiresDog();
+
   void addToPlayerOnSelection(Set<String> objectsToAdd);
 
   void addToPlayerOnSelection(String objectToAdd);

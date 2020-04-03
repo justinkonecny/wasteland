@@ -4,6 +4,7 @@ import wasteland.decision.IChoice;
 import wasteland.decision.INode;
 import wasteland.util.Constants;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -15,12 +16,14 @@ public class Controller {
   private Scanner scanner;
   private int playerScore;
   private Set<String> playerInventory;
+  private boolean playerHasDog;
 
   public Controller(INode startNode) {
     this.startNode = startNode;
     this.scanner = new Scanner(System.in);
     this.playerScore = 0;
     this.playerInventory = new HashSet<String>();
+    this.playerHasDog = false;
   }
 
   public void run() {
@@ -40,9 +43,18 @@ public class Controller {
     System.out.println();
     System.out.println(Constants.USER_PROMPT_BEFORE);
 
-    List<IChoice> choices = node.getAllChoices();
-    for (int i = 0; i < node.getNumberOfChoices(); i++) {
-      IChoice choice = choices.get(i);
+    List<IChoice> filteredChoices = new ArrayList<IChoice>();
+    for (IChoice choice : node.getAllChoices()) {
+      if (choice.getDoesDependOnDog()) {
+        if ((choice.getRequiresDog() && !this.playerHasDog) || (!choice.getRequiresDog() && this.playerHasDog)) {
+          continue;
+        }
+      }
+      filteredChoices.add(choice);
+    }
+
+    for (int i = 0; i < filteredChoices.size(); i++) {
+      IChoice choice = filteredChoices.get(i);
       System.out.println(String.format(Constants.FMT_OPTION, i, choice.getChoiceText()));
     }
     System.out.println();
@@ -51,12 +63,16 @@ public class Controller {
     int selection = this.readChoice(node.getNumberOfChoices());
 //    System.out.println(String.format(Constants.FMT_SELECTED, selection));
 
-    IChoice action = choices.get(selection);  // The option that the user selected
+    IChoice action = filteredChoices.get(selection);  // The option that the user selected
     boolean updatedInventory = action.updatePlayerInventory(this.playerInventory);
     this.playerScore = this.playerScore + action.getPointValue();
 
     if (action.hasResultText()) {
       System.out.println(action.getResultText());
+    }
+
+    if (action.hasNewDogStatus()) {
+      this.playerHasDog = action.getNewDogStatus();
     }
 
     if (updatedInventory) {
