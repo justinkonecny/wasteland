@@ -48,12 +48,12 @@ public class World {
 
   public static final String RESULT_BIKERS_COMMON = "The bikers shout at you that the travelers are actually cannibals who ate one of bikers.";
 
-  public static final String ACTION_ATTACK_BIKERS_DOG = "Attack the bikers to save the travelers (dog)";
+  public static final String ACTION_ATTACK_BIKERS_DOG = "Attack the bikers to save the travelers";
   public static final int VALUE_ATTACK_BIKERS_DOG = -1;
   public static final String RESULT_ATTACK_BIKERS_DOG = "You rush at the bikers, and your dog follows suit. It only takes a second before they notice you. " + RESULT_BIKERS_COMMON;
   public static final boolean ACTION_REQUIRES_DOG = true;
 
-  public static final String ACTION_ATTACK_BIKERS_NO_DOG = "Attack the bikers to save the travelers (no dog)";
+  public static final String ACTION_ATTACK_BIKERS_NO_DOG = "Attack the bikers to save the travelers";
   public static final int VALUE_ATTACK_BIKERS_NO_DOG = -1;
   public static final String RESULT_ATTACK_BIKERS_NO_DOG = "You rush at the bikers. It only takes a second before they notice you. " + RESULT_BIKERS_COMMON;
   public static final boolean ACTION_REQUIRES_NO_DOG = false;
@@ -69,20 +69,35 @@ public class World {
   public static final String ACTION_KILL_BIKERS = "Help the cannibals and kill the bikers for attacking them";
   public static final int VALUE_KILL_BIKERS = -2;
   public static final String RESULT_KILL_BIKERS = "The cannibals thank you for the help. In return, they give you REWARD.";
-  public static final String ADD_KILL_BIKERS_REWARD = "REWARD";
+  public static final String ADD_KILL_BIKERS_REWARD = "REWARD FROM CANNIBALS";
 
   public static final String ACTION_KILL_CANNIBALS = "Help the bikers and kill the cannibals for eating people";
   public static final int VALUE_KILL_CANNIBALS = -1;
   public static final String RESULT_KILL_CANNIBALS = "The bikers thank you for the help. In return, they give you REWARD.";
-  public static final String ADD_KILL_CANNIBALS_REWARD = "REWARD";
+  public static final String ADD_KILL_CANNIBALS_REWARD = "REWARD FROM BIKERS";
 
   public static final String ACTION_KILL_ALL = "Kill everyone in hopes of finding good loot";
   public static final int VALUE_KILL_ALL = -3;
   public static final String RESULT_KILL_ALL = "After the battle you notice the road is now littered with blood, guts, and bodies.";
+  public static final String ADD_KILL_ALL_REWARD = "REWARD FROM BOTH";
 
-  public static final String ACTION_LEAVE_ALL= "Quickly run away and let them resolve their own problems";
+  public static final String ACTION_LEAVE_ALL = "Quickly run away and let them resolve their own problems";
   public static final int VALUE_LEAVE_ALL = 0;
   public static final String RESULT_LEAVE_ALL = "You run away, thinking about how you shouldn't stick your nose in other people's problems";
+
+  // ================================================================================================================================================== \\
+
+  public static final String PROMPT_SHOVEL = "After a few minutes, you notice a shovel laying at the edge of the road. You don't see anyone around. The shovel is " +
+      "a little rusted, but it still looks functional. You know that carrying the shovel will slow you down, but it could be useful.";
+
+  public static final String ACTION_TAKE_SHOVEL = "Take the shovel";
+  public static final int VALUE_TAKE_SHOVEL = -1;
+  public static final String RESULT_TAKE_SHOVEL = "You decide it's definitely worth it to carry the the shovel. You strap it to you backpack and chug along.";
+  public static final String ADD_SHOVEL = PhysicalObject.SHOVEL;
+
+  public static final String ACTION_LEAVE_SHOVEL = "Leave the shovel";
+  public static final int VALUE_LEAVE_SHOVEL = 0;
+  public static final String RESULT_LEAVE_SHOVEL = "You decide that the extra weight is not worth the trouble, especially because you don't know who the shovel belongs to.";
 
   // ================================================================================================================================================== \\
 }

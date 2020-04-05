@@ -6,6 +6,7 @@ import wasteland.decision.IChoice;
 import wasteland.decision.INode;
 import wasteland.decision.Node;
 import wasteland.util.Constants;
+import wasteland.util.PhysicalObject;
 
 import java.io.IOException;
 import java.util.Random;
@@ -66,6 +67,43 @@ public class Main {
 
     IChoice askBikers = new Choice(World.ACTION_ASK_BIKERS, World.VALUE_ASK_BIKERS, World.RESULT_ASK_BIKERS);
     linkPromptToChoice(encounterBikers, askBikers);
+
+    // ================================================================================================================================================== \\
+
+    INode confrontBikersCannibals = new Node(World.PROMPT_BIKERS_NEXT);
+    linkChoiceToNext(attackBikersWithDog, confrontBikersCannibals);
+    linkChoiceToNext(attackBikersWithoutDog, confrontBikersCannibals);
+    linkChoiceToNext(askBikers, confrontBikersCannibals);
+
+    IChoice killBikers = new Choice(World.ACTION_KILL_BIKERS, World.VALUE_KILL_BIKERS, World.RESULT_KILL_BIKERS);
+    killBikers.addToPlayerOnSelection(World.ADD_KILL_BIKERS_REWARD);
+    linkPromptToChoice(confrontBikersCannibals, killBikers);
+
+    IChoice killCannibals = new Choice(World.ACTION_KILL_CANNIBALS, World.VALUE_KILL_CANNIBALS, World.RESULT_KILL_CANNIBALS);
+    killCannibals.addToPlayerOnSelection(World.ADD_KILL_CANNIBALS_REWARD);
+    linkPromptToChoice(confrontBikersCannibals, killCannibals);
+
+    IChoice killBoth = new Choice(World.ACTION_KILL_ALL, World.VALUE_KILL_ALL, World.RESULT_KILL_ALL);
+    killBoth.addToPlayerOnSelection(World.ADD_KILL_ALL_REWARD);
+    linkPromptToChoice(confrontBikersCannibals, killBoth);
+
+    IChoice leaveBoth = new Choice(World.ACTION_LEAVE_ALL, World.VALUE_LEAVE_ALL, World.RESULT_LEAVE_ALL);
+    linkPromptToChoice(confrontBikersCannibals, leaveBoth);
+
+    // ================================================================================================================================================== \\
+
+    INode findShovel = new Node(World.PROMPT_SHOVEL);
+    linkChoiceToNext(killBikers, findShovel);
+    linkChoiceToNext(killCannibals, findShovel);
+    linkChoiceToNext(killBoth, findShovel);
+    linkChoiceToNext(leaveBoth, findShovel);
+
+    IChoice takeShovel = new Choice(World.ACTION_TAKE_SHOVEL, World.VALUE_TAKE_SHOVEL, World.RESULT_TAKE_SHOVEL);
+    takeShovel.addToPlayerOnSelection(World.ADD_SHOVEL);
+    linkPromptToChoice(findShovel, takeShovel);
+
+    IChoice leaveShovel = new Choice(World.ACTION_LEAVE_SHOVEL, World.VALUE_LEAVE_SHOVEL, World.RESULT_LEAVE_SHOVEL);
+    linkPromptToChoice(findShovel, leaveShovel);
 
     // ================================================================================================================================================== \\
 
