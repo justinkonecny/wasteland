@@ -5,10 +5,10 @@ import java.util.Set;
 
 public class Choice implements IChoice {
 
-  private String choiceText;
-  private String resultText;
+  protected String choiceText;
+  protected String resultText;
+  protected int pointValue;
   private INode nextNode;
-  private int pointValue;
   private Set<String> objectsToAdd;
   private Set<String> objectsToRemove;
   private boolean hasNewDogStatus;
@@ -30,6 +30,13 @@ public class Choice implements IChoice {
     init();
   }
 
+  public Choice() {
+    this.pointValue = 0;
+    this.choiceText = "";
+    this.resultText = "";
+    init();
+  }
+
   private void init() {
     this.nextNode = null;
     this.objectsToAdd = new HashSet<String>();
@@ -42,12 +49,12 @@ public class Choice implements IChoice {
 
 
   @Override
-  public String getChoiceText() {
+  public String getChoiceText(Set<String> playerInventory, boolean isInfected) {
     return this.choiceText;
   }
 
   @Override
-  public String getResultText() {
+  public String getResultText(Set<String> playerInventory, boolean isInfected) {
     return this.resultText;
   }
 
@@ -112,7 +119,7 @@ public class Choice implements IChoice {
   }
 
   @Override
-  public int getPointValue() {
+  public int getPointValue(Set<String> playerInventory, boolean isInfected) {
     return this.pointValue;
   }
 

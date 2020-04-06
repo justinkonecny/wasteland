@@ -6,9 +6,9 @@ import java.util.Set;
 
 public interface IChoice {
 
-  String getChoiceText();
+  String getChoiceText(Set<String> playerInventory, boolean isInfected);
 
-  String getResultText();
+  String getResultText(Set<String> playerInventory, boolean isInfected);
 
   boolean hasResultText();
 
@@ -32,7 +32,7 @@ public interface IChoice {
 
   boolean updatePlayerInventory(Set<String> playerInventory);
 
-  int getPointValue();
+  int getPointValue(Set<String> playerInventory, boolean isInfected);
 
   boolean hasNextNode();
 

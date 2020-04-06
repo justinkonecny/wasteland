@@ -100,4 +100,35 @@ public class World {
   public static final String RESULT_LEAVE_SHOVEL = "You decide that the extra weight is not worth the trouble, especially because you don't know who the shovel belongs to.";
 
   // ================================================================================================================================================== \\
+
+  // ABANDONED HOUSE
+
+  // ================================================================================================================================================== \\
+
+  // SCIENTIST HUMAN EXPERIMENTS
+
+  // ================================================================================================================================================== \\
+
+  public static final String PROMPT_BOR = "You come across the Bill of Rights.";
+
+  public static final String ACTION_BOR_PROTECT = "Take the Bill of Rights with the intention to protect it";
+  public static final int VALUE_BOR_PROTECT = +2;
+  public static final String RESULT_BOR_PROTECT = "You take the Bill of Rights and decide it's worth protecting to preserve it.";
+  public static final String ADD_BOR = PhysicalObject.BILL_OF_RIGHTS;
+
+  public static final String ACTION_BOR_ALTER = "Take the Bill of Rights with the intention to protect it";
+  public static final int VALUE_BOR_ALTER = -2;
+  public static final String RESULT_BOR_ALTER = "You take the Bill of Rights and decide to make a few edits to your advantage.";
+  public static final String ADD_BOR_ALTERED = PhysicalObject.BILL_OF_RIGHTS_ALTERED;
+
+  public static final String ACTION_BOR_HIDE = "Hide the Bill of Rights and pretend you never found it";
+  public static final int VALUE_BOR_HIDE = -1;
+  public static final String RESULT_BOR_HIDE = "You hide the Bill of Rights back where you found it.";
+
+  public static final String ACTION_BOR_HIDE_SHOVEL = "Bury the Bill of Rights and pretend you never found it";
+  public static final int VALUE_BOR_HIDE_SHOVEL = -1;
+  public static final String RESULT_BOR_HIDE_SHOVEL = "You use your shovel to bury Bill of Rights so no one can find it.";
+
+
+  // ================================================================================================================================================== \\
 }
