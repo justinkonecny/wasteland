@@ -1,13 +1,15 @@
 package wasteland;
 
+import org.apache.commons.text.WordUtils;
+import wasteland.data.ChoiceAttackBikers;
 import wasteland.data.ChoiceBillOfRightsHide;
+import wasteland.data.NodeHospital;
 import wasteland.data.World;
 import wasteland.decision.Choice;
 import wasteland.decision.IChoice;
 import wasteland.decision.INode;
 import wasteland.decision.Node;
 import wasteland.util.Constants;
-import wasteland.util.PhysicalObject;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,15 +23,15 @@ public class Controller {
   private Scanner scanner;
   private int playerScore;
   private Set<String> playerInventory;
-  private boolean playerHasDog;
-  private boolean playerIsInfected;
+  private boolean doesPlayerHaveDog;
+  private boolean isPlayerInfected;
 
-  public Controller(boolean playerIsInfected) {
-    this.playerIsInfected = playerIsInfected;
+  public Controller(boolean isPlayerInfected) {
+    this.isPlayerInfected = isPlayerInfected;
     this.scanner = new Scanner(System.in);
     this.playerScore = 0;
     this.playerInventory = new HashSet<String>();
-    this.playerHasDog = false;
+    this.doesPlayerHaveDog = false;
     this.startNode = init();
   }
 
@@ -37,6 +39,7 @@ public class Controller {
     INode next = this.startNode;
 
     while (next != null) {
+      System.out.println();
       next = this.displayPrompt(next);
     }
 
@@ -44,51 +47,38 @@ public class Controller {
   }
 
   private INode displayPrompt(INode node) {
-    String startPrompt = node.getPrompt();
-    System.out.println(Constants.DIVIDER);
-    System.out.println(startPrompt);
-    System.out.println();
-    System.out.println(Constants.USER_PROMPT_BEFORE);
+    String startPrompt = node.getPrompt(this.isPlayerInfected);
+    printWrap(startPrompt);
+    printWrap();
+    printWrap(Constants.USER_PROMPT_BEFORE);
 
-    List<IChoice> filteredChoices = new ArrayList<IChoice>();
-    for (IChoice choice : node.getAllChoices()) {
-      if (choice.getDoesDependOnDog()) {
-        if ((choice.getRequiresDog() && !this.playerHasDog) || (!choice.getRequiresDog() && this.playerHasDog)) {
-          continue;
-        }
-      }
-      filteredChoices.add(choice);
-    }
-
+    List<IChoice> filteredChoices = node.getAllChoices();
     for (int i = 0; i < filteredChoices.size(); i++) {
       IChoice choice = filteredChoices.get(i);
-      System.out.println(String.format(Constants.FMT_OPTION, i, choice.getChoiceText(this.playerInventory, this.playerIsInfected)));
+      printWrap(String.format(Constants.FMT_OPTION, i, choice.getChoiceText(this.playerInventory, this.isPlayerInfected, this.doesPlayerHaveDog)));
     }
-    System.out.println();
-
+    printWrap();
 
     int selection = this.readChoice(node.getNumberOfChoices());
-//    System.out.println(String.format(Constants.FMT_SELECTED, selection));
 
     IChoice action = filteredChoices.get(selection);  // The option that the user selected
     boolean updatedInventory = action.updatePlayerInventory(this.playerInventory);
-    this.playerScore = this.playerScore + action.getPointValue(this.playerInventory, this.playerIsInfected);
+    this.playerScore = this.playerScore + action.getPointValue(this.playerInventory, this.isPlayerInfected, this.doesPlayerHaveDog);
 
     if (action.hasResultText()) {
-      System.out.println(action.getResultText(this.playerInventory, this.playerIsInfected));
+      printWrap(action.getResultText(this.playerInventory, this.isPlayerInfected, this.doesPlayerHaveDog));
     }
 
     if (action.hasNewDogStatus()) {
-      this.playerHasDog = action.getNewDogStatus();
+      this.doesPlayerHaveDog = action.getNewDogStatus();
     }
 
     if (updatedInventory) {
-      System.out.println();
-      System.out.println(Constants.INVENTORY_UPDATE);
-      System.out.println(String.format("[%s]", String.join(", ", this.playerInventory)));
-      System.out.println();
+      printWrap();
+      printWrap(Constants.INVENTORY_UPDATE);
+      printWrap(String.format("[%s]", String.join(", ", this.playerInventory)));
+      printWrap();
     }
-
 
     if (action.hasNextNode()) {
       INode next = action.getNextNode();
@@ -102,11 +92,11 @@ public class Controller {
   }
 
   private void endGame() {
-    System.out.println();
-    System.out.println(String.format(Constants.GAME_END, this.playerScore));
-    System.out.println();
-    System.out.println(Constants.GAME_END_INVENTORY);
-    System.out.println(String.format("[%s]", String.join(", ", this.playerInventory)));
+    printWrap();
+    printWrap(String.format(Constants.GAME_END, this.playerScore));
+    printWrap();
+    printWrap(Constants.GAME_END_INVENTORY);
+    printWrap(String.format("[%s]", String.join(", ", this.playerInventory)));
   }
 
   private int readChoice(int numberOfChoices) {
@@ -116,6 +106,7 @@ public class Controller {
         int selection = this.scanner.nextInt();
         if (selection < numberOfChoices && selection >= 0) {
           System.out.println();
+          clearConsole();
           return selection;
         }
       } catch (InputMismatchException e) {
@@ -132,10 +123,22 @@ public class Controller {
     choice.setNextNode(next);
   }
 
+  private static void printWrap() {
+    System.out.println();
+  }
+
+  private static void printWrap(String text) {
+    System.out.println(WordUtils.wrap(text, Constants.WRAP_LEN));
+  }
+
+  private static void clearConsole() {
+    System.out.println("\033[H\033[2J");
+  }
+
   private INode init() {
     // ================================================================================================================================================== \\
 
-    INode wakeHospital = new Node(World.PROMPT_WAKE_HOSPITAL);
+    INode wakeHospital = new NodeHospital();
 
     IChoice stayInHospital = new Choice(World.ACTION_STAY_HOSPITAL, World.VALUE_STAY_HOSPITAL, World.RESULT_STAY_HOSPITAL + World.RESULT_LEAVE_HOSPITAL);
     stayInHospital.addToPlayerOnSelection(World.ADD_LEAVE_HOSPITAL);
@@ -165,13 +168,8 @@ public class Controller {
     linkChoiceToNext(feedDog, encounterBikers);
     linkChoiceToNext(leaveDog, encounterBikers);
 
-    IChoice attackBikersWithDog = new Choice(World.ACTION_ATTACK_BIKERS_DOG, World.VALUE_ATTACK_BIKERS_DOG, World.RESULT_ATTACK_BIKERS_DOG);
-    attackBikersWithDog.setDependOnDog(World.ACTION_REQUIRES_DOG);
-    linkPromptToChoice(encounterBikers, attackBikersWithDog);
-
-    IChoice attackBikersWithoutDog = new Choice(World.ACTION_ATTACK_BIKERS_NO_DOG, World.VALUE_ATTACK_BIKERS_NO_DOG, World.RESULT_ATTACK_BIKERS_NO_DOG);
-    attackBikersWithoutDog.setDependOnDog(World.ACTION_REQUIRES_NO_DOG);
-    linkPromptToChoice(encounterBikers, attackBikersWithoutDog);
+    IChoice attackBikers = new ChoiceAttackBikers();
+    linkPromptToChoice(encounterBikers, attackBikers);
 
     IChoice askBikers = new Choice(World.ACTION_ASK_BIKERS, World.VALUE_ASK_BIKERS, World.RESULT_ASK_BIKERS);
     linkPromptToChoice(encounterBikers, askBikers);
@@ -179,8 +177,7 @@ public class Controller {
     // ================================================================================================================================================== \\
 
     INode confrontBikersCannibals = new Node(World.PROMPT_BIKERS_NEXT);
-    linkChoiceToNext(attackBikersWithDog, confrontBikersCannibals);
-    linkChoiceToNext(attackBikersWithoutDog, confrontBikersCannibals);
+    linkChoiceToNext(attackBikers, confrontBikersCannibals);
     linkChoiceToNext(askBikers, confrontBikersCannibals);
 
     IChoice killBikers = new Choice(World.ACTION_KILL_BIKERS, World.VALUE_KILL_BIKERS, World.RESULT_KILL_BIKERS);

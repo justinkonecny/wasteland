@@ -49,12 +49,12 @@ public class Choice implements IChoice {
 
 
   @Override
-  public String getChoiceText(Set<String> playerInventory, boolean isInfected) {
+  public String getChoiceText(Set<String> playerInventory, boolean isInfected, boolean hasDog) {
     return this.choiceText;
   }
 
   @Override
-  public String getResultText(Set<String> playerInventory, boolean isInfected) {
+  public String getResultText(Set<String> playerInventory, boolean isInfected, boolean hasDog) {
     return this.resultText;
   }
 
@@ -77,22 +77,6 @@ public class Choice implements IChoice {
   @Override
   public boolean getNewDogStatus() {
     return this.newDogStatus;
-  }
-
-  @Override
-  public void setDependOnDog(boolean requiresDog) {
-    this.dependsOnDog = true;
-    this.requiresDog = requiresDog;
-  }
-
-  @Override
-  public boolean getDoesDependOnDog() {
-    return this.dependsOnDog;
-  }
-
-  @Override
-  public boolean getRequiresDog() {
-    return this.requiresDog;
   }
 
   @Override
@@ -119,7 +103,7 @@ public class Choice implements IChoice {
   }
 
   @Override
-  public int getPointValue(Set<String> playerInventory, boolean isInfected) {
+  public int getPointValue(Set<String> playerInventory, boolean isInfected, boolean hasDog) {
     return this.pointValue;
   }
 

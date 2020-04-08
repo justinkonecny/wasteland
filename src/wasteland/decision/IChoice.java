@@ -6,9 +6,9 @@ import java.util.Set;
 
 public interface IChoice {
 
-  String getChoiceText(Set<String> playerInventory, boolean isInfected);
+  String getChoiceText(Set<String> playerInventory, boolean isInfected, boolean hasDog);
 
-  String getResultText(Set<String> playerInventory, boolean isInfected);
+  String getResultText(Set<String> playerInventory, boolean isInfected, boolean hasDog);
 
   boolean hasResultText();
 
@@ -18,12 +18,6 @@ public interface IChoice {
 
   boolean getNewDogStatus();
 
-  void setDependOnDog(boolean hasDog);
-
-  boolean getDoesDependOnDog();
-
-  boolean getRequiresDog();
-
   void addToPlayerOnSelection(Set<String> objectsToAdd);
 
   void addToPlayerOnSelection(String objectToAdd);
@@ -32,7 +26,7 @@ public interface IChoice {
 
   boolean updatePlayerInventory(Set<String> playerInventory);
 
-  int getPointValue(Set<String> playerInventory, boolean isInfected);
+  int getPointValue(Set<String> playerInventory, boolean isInfected, boolean hasDog);
 
   boolean hasNextNode();
 

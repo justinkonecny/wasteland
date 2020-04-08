@@ -8,7 +8,10 @@ import java.util.Set;
 
 public class World {
 
-  public static final String PROMPT_WAKE_HOSPITAL = "You wake up in an empty hospital.";
+  public static final String PROMPT_WAKE_HOSPITAL_INFECTED = "You wake up in an empty hospital. You look down at your deformed skin covered in " +
+      "boils and scars, remembering the discrimination and hate you suffered from your friends and family before you were taken to the hospital.";
+
+  public static final String PROMPT_WAKE_HOSPITAL_IMMUNE = "You wake up in an empty hospital. You look down and see your clear skin, remembering you were one of the lucky few to be immune to the virus.";
 
   public static final String ACTION_STAY_HOSPITAL = "Stay in the hospital";
   public static final int VALUE_STAY_HOSPITAL = 0;

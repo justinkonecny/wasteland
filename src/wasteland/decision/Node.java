@@ -5,9 +5,16 @@ import java.util.List;
 
 public class Node implements INode {
 
-  private String prompt;
+  protected String prompt;
   private List<IChoice> choices;
   private int numberOfChoices;
+
+  public Node() {
+    this.prompt = "";
+    this.choices = new ArrayList<IChoice>();
+    this.numberOfChoices = 0;
+  }
+
 
   public Node(String prompt) {
     this.prompt = prompt;
@@ -22,7 +29,7 @@ public class Node implements INode {
   }
 
   @Override
-  public String getPrompt() {
+  public String getPrompt(boolean isInfected) {
     return this.prompt;
   }
 
