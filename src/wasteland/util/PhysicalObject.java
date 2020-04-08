@@ -10,5 +10,6 @@ public class PhysicalObject {
   public static final String SNACKS = "Snacks";
   public static final String BILL_OF_RIGHTS = "Bill of Rights";
   public static final String BILL_OF_RIGHTS_ALTERED = "Altered Bill of Rights";
+  public static final String MED_SUPPLIES = "Medical Supplies";
   public static final String BIBLE = "King James Bible";
 }

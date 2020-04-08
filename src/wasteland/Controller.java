@@ -215,17 +215,51 @@ public class Controller {
 
     // ================================================================================================================================================== \\
 
-    // ABANDONED HOUSE
+    INode findHouse = new Node(World.PROMPT_HOUSE);
+    linkChoiceToNext(takeShovel, findHouse);
+    linkChoiceToNext(leaveShovel, findHouse);
+
+    IChoice enterHouse = new Choice(World.ACTION_HOUSE_ENTER, World.VALUE_HOUSE_ENTER, World.RESULT_HOUSE_ENTER);
+    linkPromptToChoice(findHouse, enterHouse);
+
+    IChoice passHouse = new Choice(World.ACTION_HOUSE_LEAVE, World.VALUE_HOUSE_LEAVE, World.RESULT_HOUSE_LEAVE);
+    linkPromptToChoice(findHouse, passHouse);
 
     // ================================================================================================================================================== \\
 
+    INode houseLady = new Node(World.PROMPT_HOUSE_LADY);
+    linkChoiceToNext(enterHouse, houseLady);
+
+    IChoice helpLady = new Choice(World.ACTION_HOUSE_LADY_HELP, World.VALUE_HOUSE_LADY_HELP, World.RESULT_HOUSE_LADY_HELP);
+    linkPromptToChoice(houseLady, helpLady);
+
+    IChoice stealLady = new Choice(World.ACTION_HOUSE_LADY_STEAL, World.VALUE_HOUSE_LADY_STEAL, World.RESULT_HOUSE_LADY_STEAL);
+    stealLady.addToPlayerOnSelection(World.ADD_HOUSE_LADY_STEAL);
+    linkPromptToChoice(houseLady, stealLady);
+
+    // ================================================================================================================================================== \\
+
+    INode houseDinner = new Node(World.PROMPT_HOUSE_DINNER);
+    linkChoiceToNext(helpLady, houseDinner);
+
+    IChoice acceptDinner = new Choice(World.ACTION_HOUSE_DINNER_STAY, World.VALUE_HOUSE_DINNER_STAY, World.RESULT_HOUSE_DINNER_STAY);
+    linkPromptToChoice(houseDinner, acceptDinner);
+
+    IChoice denyDinner = new Choice(World.ACTION_HOUSE_DINNER_LEAVE, World.VALUE_HOUSE_DINNER_LEAVE, World.RESULT_HOUSE_DINNER_LEAVE);
+    linkPromptToChoice(houseDinner, denyDinner);
+
+    // ================================================================================================================================================== \\
+
+//    linkChoiceToNext(passHouse, encounterScientist);
+//    linkChoiceToNext(acceptDinner, encounterScientist);
+//    linkChoiceToNext(denyDinner, encounterScientist);
     // SCIENTIST HUMAN EXPERIMENTS
 
     // ================================================================================================================================================== \\
 
     INode findBOR = new Node(World.PROMPT_BOR);
-    linkChoiceToNext(takeShovel, findBOR);  // TODO: CHANGE
-    linkChoiceToNext(leaveShovel, findBOR);  // TODO: CHANGE
+//    linkChoiceToNext(takeShovel, findBOR);  // TODO: CHANGE
+//    linkChoiceToNext(leaveShovel, findBOR);  // TODO: CHANGE
 
     IChoice protectBOR = new Choice(World.ACTION_BOR_PROTECT, World.VALUE_BOR_PROTECT, World.RESULT_BOR_PROTECT);
     takeShovel.addToPlayerOnSelection(World.ADD_BOR);

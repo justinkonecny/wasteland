@@ -101,7 +101,43 @@ public class World {
 
   // ================================================================================================================================================== \\
 
-  // ABANDONED HOUSE
+  public static final String PROMPT_HOUSE = "You notice a house set back far off the road that looks old and abandoned.";
+
+  public static final String ACTION_HOUSE_LEAVE = "Continue along the road and ignore the house";
+  public static final int VALUE_HOUSE_LEAVE = 0;
+  public static final String RESULT_HOUSE_LEAVE = "You keep moving. It's not worth the risk to enter the house.";
+
+  public static final String ACTION_HOUSE_ENTER = "Find a way in to look for supplies";
+  public static final int VALUE_HOUSE_ENTER = 0;
+  public static final String RESULT_HOUSE_ENTER = "You approach the house and find that the front door is unlocked. You open the door and walk inside.";
+
+  // ================================================================================================================================================== \\
+
+  public static final String PROMPT_HOUSE_LADY = "A perfectly clean house, with the table set and ready for dinner. You check the cabinets and they're full of food and supplies. " +
+      "An elderly woman comes down the stairs, delighted to see you. She asks you to help her carry a box of medical supplies up the stairs for her.";
+
+  public static final String ACTION_HOUSE_LADY_HELP = "Help the old lady and carry the supplies up the stairs";
+  public static final int VALUE_HOUSE_LADY_HELP = +2;
+  public static final String RESULT_HOUSE_LADY_HELP = "You pick up the supplies and walk up the stairs. She has you place them in an empty room at the end of the hall.";
+
+  public static final String ACTION_HOUSE_LADY_STEAL = "Grab the box of supplies and run out of the house";
+  public static final int VALUE_HOUSE_LADY_STEAL = -2;
+  public static final String RESULT_HOUSE_LADY_STEAL = "You pick up the supplies and make a dash for the door. You begins shouting and begging you to come back, but you know that " +
+      "she can't stop you. As you step out the door, you hear her scream that she's going to die without those. You continue running away. When you make it far enough, you stop and pack the supplies in your backpack.";
+  public static final String ADD_HOUSE_LADY_STEAL = PhysicalObject.MED_SUPPLIES;
+
+  // ================================================================================================================================================== \\
+
+  public static final String PROMPT_HOUSE_DINNER = "The lady is delighted that you helped her. She asks you to sit down for dinner as a thank you.";
+
+  public static final String ACTION_HOUSE_DINNER_STAY = "Accept the offer and stay for dinner";
+  public static final int VALUE_HOUSE_DINNER_STAY = 0;
+  public static final String RESULT_HOUSE_DINNER_STAY = "She prepares dinner and you both sit down at the table. The woman says a prayer and you eat a nice meal. She offers you the extra bed upstairs " +
+      "so you decided to stay for the night. You wake up well-rested, thank her, and leave back out the way you came in.";
+
+  public static final String ACTION_HOUSE_DINNER_LEAVE = "Deny the offer and leave";
+  public static final int VALUE_HOUSE_DINNER_LEAVE = 0;
+  public static final String RESULT_HOUSE_DINNER_LEAVE = "The longer you stay in the house, the more anxious you feel, so you decide that it's time leave. You thank her quickly walk out the door you entered.";
 
   // ================================================================================================================================================== \\
 
