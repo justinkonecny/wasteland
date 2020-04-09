@@ -4,6 +4,8 @@ import org.apache.commons.text.WordUtils;
 import wasteland.data.ChoiceAttackBikers;
 import wasteland.data.ChoiceBillOfRightsHide;
 import wasteland.data.NodeHospital;
+import wasteland.data.NodeInfectionFork;
+import wasteland.data.NodePromptGirl;
 import wasteland.data.World;
 import wasteland.decision.Choice;
 import wasteland.decision.IChoice;
@@ -11,7 +13,6 @@ import wasteland.decision.INode;
 import wasteland.decision.Node;
 import wasteland.util.Constants;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -47,6 +48,10 @@ public class Controller {
   }
 
   private INode displayPrompt(INode node) {
+    if (!node.showUserThisPrompt(this.playerInventory)) {
+      return node.getNextNode(this.isPlayerInfected);
+    }
+
     String startPrompt = node.getPrompt(this.isPlayerInfected);
     printWrap(startPrompt);
     printWrap();
@@ -77,15 +82,11 @@ public class Controller {
       printWrap();
       printWrap(Constants.INVENTORY_UPDATE);
       printWrap(String.format("[%s]", String.join(", ", this.playerInventory)));
-      printWrap();
     }
 
     if (action.hasNextNode()) {
-      INode next = action.getNextNode();
-      if (next.hasChoices()) {
-        // CASE: there is another prompt and more choices, so keep going
-        return next;
-      }
+      // CASE: there is another prompt and more choices, so keep going
+      return action.getNextNode();
     }
 
     return null;
@@ -247,27 +248,153 @@ public class Controller {
 
     // ================================================================================================================================================== \\
 
-//    linkChoiceToNext(passHouse, encounterScientist);
-//    linkChoiceToNext(acceptDinner, encounterScientist);
-//    linkChoiceToNext(denyDinner, encounterScientist);
-    // SCIENTIST HUMAN EXPERIMENTS
+    INode encounterScientist = new Node(World.PROMPT_SCIENTIST);
+    linkChoiceToNext(passHouse, encounterScientist);
+    linkChoiceToNext(stealLady, encounterScientist);
+    linkChoiceToNext(acceptDinner, encounterScientist);
+    linkChoiceToNext(denyDinner, encounterScientist);
+
+    IChoice helpScientist = new Choice(World.ACTION_SCIENTIST_ACCEPT, World.VALUE_SCIENTIST_ACCEPT, World.RESULT_SCIENTIST_ACCEPT);
+    linkPromptToChoice(encounterScientist, helpScientist);
+
+    IChoice leaveScientist = new Choice(World.ACTION_SCIENTIST_LEAVE, World.VALUE_SCIENTIST_LEAVE, World.RESULT_SCIENTIST_LEAVE);
+    linkPromptToChoice(encounterScientist, leaveScientist);
+
+    IChoice killScientist = new Choice(World.ACTION_SCIENTIST_KILL, World.VALUE_SCIENTIST_KILL, World.RESULT_SCIENTIST_KILL);
+    killScientist.addToPlayerOnSelection(World.ADD_SCIENTIST_KILL);
+    linkPromptToChoice(encounterScientist, killScientist);
 
     // ================================================================================================================================================== \\
 
     INode findBOR = new Node(World.PROMPT_BOR);
-//    linkChoiceToNext(takeShovel, findBOR);  // TODO: CHANGE
-//    linkChoiceToNext(leaveShovel, findBOR);  // TODO: CHANGE
+    linkChoiceToNext(helpScientist, findBOR);
+    linkChoiceToNext(leaveScientist, findBOR);
+    linkChoiceToNext(killScientist, findBOR);
 
     IChoice protectBOR = new Choice(World.ACTION_BOR_PROTECT, World.VALUE_BOR_PROTECT, World.RESULT_BOR_PROTECT);
-    takeShovel.addToPlayerOnSelection(World.ADD_BOR);
+    protectBOR.addToPlayerOnSelection(World.ADD_BOR);
     linkPromptToChoice(findBOR, protectBOR);
 
     IChoice alterBOR = new Choice(World.ACTION_BOR_ALTER, World.VALUE_BOR_ALTER, World.RESULT_BOR_ALTER);
-    takeShovel.addToPlayerOnSelection(World.ADD_BOR);
+    alterBOR.addToPlayerOnSelection(World.ADD_BOR_ALTERED);
     linkPromptToChoice(findBOR, alterBOR);
 
     IChoice hideBOR = new ChoiceBillOfRightsHide();
     linkPromptToChoice(findBOR, hideBOR);
+
+    // ================================================================================================================================================== \\
+
+    INode findStuffedAnimal = new Node(World.PROMPT_STUFFED_ANIMAL);
+    linkChoiceToNext(protectBOR, findStuffedAnimal);
+    linkChoiceToNext(alterBOR, findStuffedAnimal);
+    linkChoiceToNext(hideBOR, findStuffedAnimal);
+
+    IChoice takeStuffedAnimal = new Choice(World.ACTION_STUFFED_ANIMAL_TAKE, World.VALUE_STUFFED_ANIMAL_TAKE, World.RESULT_STUFFED_ANIMAL_TAKE);
+    takeStuffedAnimal.addToPlayerOnSelection(World.ADD_STUFFED_ANIMAL_TAKE);
+    linkPromptToChoice(findStuffedAnimal, takeStuffedAnimal);
+
+    IChoice leaveStuffedAnimal = new Choice(World.ACTION_STUFFED_ANIMAL_LEAVE, World.VALUE_STUFFED_ANIMAL_LEAVE, World.RESULT_STUFFED_ANIMAL_LEAVE);
+    linkPromptToChoice(findStuffedAnimal, leaveStuffedAnimal);
+
+    // ================================================================================================================================================== \\
+
+    INode findGrave = new Node(World.PROMPT_GRAVE);
+    linkChoiceToNext(takeStuffedAnimal, findGrave);
+    linkChoiceToNext(leaveStuffedAnimal, findGrave);
+
+    IChoice takeRing = new Choice(World.ACTION_GRAVE_TAKE, World.VALUE_GRAVE_TAKE, World.RESULT_GRAVE_TAKE);
+    takeRing.addToPlayerOnSelection(World.ADD_GRAVE_TAKE);
+    linkPromptToChoice(findGrave, takeRing);
+
+    IChoice leaveRing = new Choice(World.ACTION_GRAVE_LEAVE, World.VALUE_GRAVE_LEAVE, World.RESULT_GRAVE_LEAVE);
+    linkPromptToChoice(findGrave, leaveRing);
+
+    // ================================================================================================================================================== \\
+
+    INode infectedMother = new Node(World.PROMPT_INF_MOTHER);
+    INode immuneMother = new Node(World.PROMPT_IMN_MOTHER);
+
+    INode fork = new NodeInfectionFork(infectedMother, immuneMother);
+    linkChoiceToNext(takeRing, fork);
+    linkChoiceToNext(leaveRing, fork);
+
+    // ================================================================================================================================================== \\
+    // ================================================================================================================================================== \\
+
+    IChoice infectedMotherShareFood = new Choice(World.ACTION_INF_MOTHER_GIVE, World.VALUE_INF_MOTHER_GIVE, World.RESULT_INF_MOTHER_GIVE);
+    infectedMotherShareFood.removeFromPlayerOnSelection(World.REMOVE_INF_MOTHER_GIVE);
+    linkPromptToChoice(infectedMother, infectedMotherShareFood);
+
+    IChoice infectedMotherIgnore = new Choice(World.ACTION_INF_MOTHER_REFUSE, World.VALUE_INF_MOTHER_REFUSE, World.RESULT_INF_MOTHER_REFUSE);
+    linkPromptToChoice(infectedMother, infectedMotherIgnore);
+
+    // ================================================================================================================================================== \\
+
+    INode infectedCaptured = new Node(World.PROMPT_CAPTURED);
+
+    INode infectedGirl = new NodePromptGirl(World.PROMPT_INF_GIRL, infectedCaptured);
+    linkChoiceToNext(infectedMotherShareFood, infectedGirl);
+    linkChoiceToNext(infectedMotherIgnore, infectedGirl);
+
+    IChoice infectedGirlGive = new Choice(World.ACTION_INF_GIRL_GIVE, World.VALUE_INF_GIRL_GIVE, World.RESULT_INF_GIRL_GIVE);
+    infectedGirlGive.removeFromPlayerOnSelection(World.REMOVE_INF_GIRL_GIVE);
+    linkPromptToChoice(infectedGirl, infectedGirlGive);
+
+    IChoice infectedGirlRefuse = new Choice(World.ACTION_INF_GIRL_REFUSE, World.VALUE_INF_GIRL_REFUSE, World.RESULT_INF_GIRL_REFUSE);
+    linkPromptToChoice(infectedGirl, infectedGirlRefuse);
+
+    // ================================================================================================================================================== \\
+
+    linkChoiceToNext(infectedGirlGive, infectedCaptured);
+    linkChoiceToNext(infectedGirlRefuse, infectedCaptured);
+
+    IChoice capturedAgree = new Choice(World.ACTION_CAPTURED_AGREE, World.VALUE_CAPTURED_AGREE, World.RESULT_CAPTURED_AGREE);
+    linkPromptToChoice(infectedCaptured, capturedAgree);
+
+    IChoice capturedRevolt = new Choice(World.ACTION_CAPTURED_REVOLT, World.VALUE_CAPTURED_REVOLT, World.RESULT_CAPTURED_REVOLT);
+    linkPromptToChoice(infectedCaptured, capturedRevolt);
+
+    IChoice capturedEqual = new Choice(World.ACTION_CAPTURED_EQUAL, World.VALUE_CAPTURED_EQUAL, World.RESULT_CAPTURED_EQUAL);
+    linkPromptToChoice(infectedCaptured, capturedEqual);
+
+    // ================================================================================================================================================== \\
+    // ================================================================================================================================================== \\
+
+    IChoice immuneMotherShareFood = new Choice(World.ACTION_IMN_MOTHER_GIVE, World.VALUE_IMN_MOTHER_GIVE, World.RESULT_IMN_MOTHER_GIVE);
+    immuneMotherShareFood.removeFromPlayerOnSelection(World.REMOVE_IMN_MOTHER_GIVE);
+    linkPromptToChoice(immuneMother, immuneMotherShareFood);
+
+    IChoice immuneMotherIgnore = new Choice(World.ACTION_IMN_MOTHER_REFUSE, World.VALUE_IMN_MOTHER_REFUSE, World.RESULT_IMN_MOTHER_REFUSE);
+    linkPromptToChoice(immuneMother, immuneMotherIgnore);
+
+    // ================================================================================================================================================== \\
+
+    INode immuneWander = new Node(World.PROMPT_WANDER);
+
+    INode immuneGirl = new NodePromptGirl(World.PROMPT_IMN_GIRL, immuneWander);
+    linkChoiceToNext(immuneMotherShareFood, immuneGirl);
+    linkChoiceToNext(immuneMotherIgnore, immuneGirl);
+
+    IChoice immuneGirlGive = new Choice(World.ACTION_IMN_GIRL_GIVE, World.VALUE_GIRL_IMN_GIVE, World.RESULT_IMN_GIRL_GIVE);
+    immuneGirlGive.removeFromPlayerOnSelection(World.REMOVE_IMN_GIRL_GIVE);
+    linkPromptToChoice(immuneGirl, immuneGirlGive);
+
+    IChoice immuneGirlRefuse = new Choice(World.ACTION_IMN_GIRL_REFUSE, World.VALUE_IMN_GIRL_REFUSE, World.RESULT_IMN_GIRL_REFUSE);
+    linkPromptToChoice(immuneGirl, immuneGirlRefuse);
+
+    // ================================================================================================================================================== \\
+
+    linkChoiceToNext(immuneGirlGive, immuneWander);
+    linkChoiceToNext(immuneGirlRefuse, immuneWander);
+
+    IChoice wanderStay = new Choice(World.ACTION_WANDER_STAY, World.VALUE_WANDER_STAY, World.RESULT_WANDER_STAY);
+    linkPromptToChoice(immuneWander, wanderStay);
+
+    IChoice wanderRevolt = new Choice(World.ACTION_WANDER_REVOLT, World.VALUE_WANDER_REVOLT, World.RESULT_WANDER_REVOLT);
+    linkPromptToChoice(immuneWander, wanderRevolt);
+
+    IChoice wanderEqual = new Choice(World.ACTION_WANDER_EQUAL, World.VALUE_WANDER_EQUAL, World.RESULT_WANDER_EQUAL);
+    linkPromptToChoice(immuneWander, wanderEqual);
 
     // ================================================================================================================================================== \\
 

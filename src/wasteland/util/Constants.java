@@ -2,13 +2,16 @@ package wasteland.util;
 
 public class Constants {
 
-  public static final int WRAP_LEN = 80;
+  public static final int WRAP_LEN = 82;
 
   public static final String DIVIDER = "####################################################################################################";
 
+  public static final String GREEN = "\u001B[32m";
+  public static final String RESET = "\033[0m";
+
   public static final String GAME_WELCOME = "Welcome to the Apocalypse. In this simulation, you will be faced with many different scenarios and situations that will push you to make a choice on how to proceed. " +
       "Each choice you make affects the course of the story, and the outcome of your journey. Who will you become in this post-apocalyptic world? Will you be a guardian angel, " +
-      "upholding your morals and helping those in need, or will you succumb to the lawlessness of your new world, and become a dangerous and greedy killer? Hit ENTER to begin.";
+      "upholding your morals and helping those in need, or will you succumb to the lawlessness of your new world, and become a dangerous and greedy killer? " + GREEN + "Hit ENTER to begin" + RESET + ".";
 
   public static final String GAME_START = "A plague has swept across the globe, killing most of the world’s population. Very few people remain on this crumbling planet, " +
       "and a stark division has been created amongst the remaining survivors of The Event. Very few people were able to survive the horrible ordeal induced by The Plaque, " +

@@ -1,6 +1,7 @@
 package wasteland.decision;
 
 import java.util.List;
+import java.util.Set;
 
 public interface INode {
 
@@ -13,4 +14,8 @@ public interface INode {
   int getNumberOfChoices();
 
   boolean hasChoices();
+
+  boolean showUserThisPrompt(Set<String> playerInventory);
+
+  INode getNextNode(boolean isInfected);
 }

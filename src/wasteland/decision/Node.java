@@ -2,6 +2,7 @@ package wasteland.decision;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class Node implements INode {
 
@@ -52,5 +53,15 @@ public class Node implements INode {
   @Override
   public boolean hasChoices() {
     return this.numberOfChoices > 0;
+  }
+
+  @Override
+  public boolean showUserThisPrompt(Set<String> playerInventory) {
+    return true;
+  }
+
+  @Override
+  public INode getNextNode(boolean isInfected) {
+    return null;
   }
 }
