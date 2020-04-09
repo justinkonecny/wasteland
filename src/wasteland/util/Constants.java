@@ -34,6 +34,21 @@ public class Constants {
 
   public static final String INVENTORY_UPDATE = "Your inventory has been updated, you now have:";
 
-  public static final String GAME_END = "The game has ended! Your karma score is: %d";
+  public static final String GAME_END = "This is the end of your journey. You have made it far, and accomplished much. You have made many decisions along the way, all which may have " +
+      "had an impact on other people or yourself. Throughout this simulation, each decision you have made has given you a score, based on the morals of the current society we live in. " +
+      "For example, pursuing a peaceful resolution awards +2 points and a violent one may remove 2 points. This simulation was meant to present many difficult situations, where the " +
+      "morally correct choice may not be obvious, but it was graded off our beliefs, and therefore the score is up to interpretation. Your “Karma Score” is displayed below.\n\n" +
+      "The game has ended! Your karma score is: %d";
+
   public static final String GAME_END_INVENTORY = "Your final inventory is:";
+
+  public static final String KARMA_NEGATIVE = "You used the lawlessness of this new post-apocalyptic world to your advantage. You chose to make decisions that  either hurt other people, " +
+      "or would have been considered wrong in your society. However, in this simulation society is gone, and therefore it’s morals have no enforcers other than yourself. ";
+
+  public static final String KARMA_ZERO = "You were neither good or bad in this new post-apocalyptic world. You decided to make decisions that would benefit you, " +
+      "while also keeping a foundation of morals in the back of your head. ";
+
+  public static final String KARMA_POSITIVE = "You were compassionate and noble in this otherwise lawless simulation. You had the options and the capability " +
+      "to live however you wanted, but you decided to uphold the morals of the society that came before this post-apocalyptic world. The morals of a " +
+      "society can only survive if they are upheld by the people in it, and you decided to be one of the last enforcers of good.";
 }

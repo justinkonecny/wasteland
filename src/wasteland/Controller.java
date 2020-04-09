@@ -3,6 +3,8 @@ package wasteland;
 import org.apache.commons.text.WordUtils;
 import wasteland.data.ChoiceAttackBikers;
 import wasteland.data.ChoiceBillOfRightsHide;
+import wasteland.data.ChoiceCapturedEqual;
+import wasteland.data.ChoiceWanderEqual;
 import wasteland.data.NodeHospital;
 import wasteland.data.NodeInfectionFork;
 import wasteland.data.NodePromptGirl;
@@ -94,10 +96,19 @@ public class Controller {
 
   private void endGame() {
     printWrap();
-    printWrap(String.format(Constants.GAME_END, this.playerScore));
-    printWrap();
     printWrap(Constants.GAME_END_INVENTORY);
     printWrap(String.format("[%s]", String.join(", ", this.playerInventory)));
+    printWrap();
+    printWrap(String.format(Constants.GAME_END, this.playerScore));
+    printWrap();
+
+    if (this.playerScore < 0) {
+      printWrap(Constants.KARMA_NEGATIVE);
+    } else if (this.playerScore == 0) {
+      printWrap(Constants.KARMA_ZERO);
+    } else {
+      printWrap(Constants.KARMA_POSITIVE);
+    }
   }
 
   private int readChoice(int numberOfChoices) {
@@ -354,7 +365,7 @@ public class Controller {
     IChoice capturedRevolt = new Choice(World.ACTION_CAPTURED_REVOLT, World.VALUE_CAPTURED_REVOLT, World.RESULT_CAPTURED_REVOLT);
     linkPromptToChoice(infectedCaptured, capturedRevolt);
 
-    IChoice capturedEqual = new Choice(World.ACTION_CAPTURED_EQUAL, World.VALUE_CAPTURED_EQUAL, World.RESULT_CAPTURED_EQUAL);
+    IChoice capturedEqual = new ChoiceCapturedEqual();
     linkPromptToChoice(infectedCaptured, capturedEqual);
 
     // ================================================================================================================================================== \\
@@ -393,7 +404,7 @@ public class Controller {
     IChoice wanderRevolt = new Choice(World.ACTION_WANDER_REVOLT, World.VALUE_WANDER_REVOLT, World.RESULT_WANDER_REVOLT);
     linkPromptToChoice(immuneWander, wanderRevolt);
 
-    IChoice wanderEqual = new Choice(World.ACTION_WANDER_EQUAL, World.VALUE_WANDER_EQUAL, World.RESULT_WANDER_EQUAL);
+    IChoice wanderEqual = new ChoiceWanderEqual();
     linkPromptToChoice(immuneWander, wanderEqual);
 
     // ================================================================================================================================================== \\

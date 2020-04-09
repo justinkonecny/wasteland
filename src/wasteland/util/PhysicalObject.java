@@ -14,5 +14,7 @@ public class PhysicalObject {
   public static final String MED_SUPPLIES = "Medical Supplies";
   public static final String STUFFED_ANIMAL = "Stuffed Animal";
   public static final String WEDDING_RING = "Wedding Ring";
-  public static final String BIBLE = "King James Bible";
+  public static final String LEATHER_JACKET = "Leather Jacket";
+  public static final String FOOD = "Food";
+  public static final String AMMO = "Ammo";
 }
