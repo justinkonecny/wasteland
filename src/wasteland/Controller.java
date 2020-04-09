@@ -102,9 +102,9 @@ public class Controller {
     printWrap(String.format(Constants.GAME_END, this.playerScore));
     printWrap();
 
-    if (this.playerScore < 0) {
+    if (this.playerScore < -1) {
       printWrap(Constants.KARMA_NEGATIVE);
-    } else if (this.playerScore == 0) {
+    } else if (this.playerScore <= 1) {
       printWrap(Constants.KARMA_ZERO);
     } else {
       printWrap(Constants.KARMA_POSITIVE);

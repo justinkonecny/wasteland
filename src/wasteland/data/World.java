@@ -144,7 +144,7 @@ public class World {
   public static final String ACTION_HOUSE_DINNER_STAY = "Accept the offer and stay for dinner";
   public static final int VALUE_HOUSE_DINNER_STAY = 0;
   public static final String RESULT_HOUSE_DINNER_STAY = "She prepares dinner and you both sit down at the table. The woman says a prayer and you eat a nice meal. " +
-      "She offers you the extra bed upstairs so you decided to stay for the night. You wake up well-rested, thank her, and leave back out the way you came in.";
+      "She offers you the extra bed upstairs but you decided not to stay for the night. You leave back out the way you came in.";
 
   public static final String ACTION_HOUSE_DINNER_LEAVE = "Deny the offer and leave";
   public static final int VALUE_HOUSE_DINNER_LEAVE = 0;
